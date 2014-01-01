@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfg:PlasmaConfiguration  
+    xmlns:cfg="http://www.plasma.org/config">
+  
+    <SDO>
+        <GlobalProvisioning>            
+           <Interface propertyNameStyle="none"/>          
+           <Implementation classNameSuffix="Impl"
+               childPackageName="impl"/>  
+           <QueryDSL>
+               <Implementation classNamePrefix="Q"
+                   childPackageName="query"/>  
+           </QueryDSL>                        
+        </GlobalProvisioning>            
+            
+        <!-- default namespace used for SDO infra itself, such as SDO datatypes -->
+        <DefaultNamespace uri="http://www.magicdraw.com/schemas/Plasma_SDO_Profile.xmi"
+            artifact="http://www.magicdraw.com/schemas/Plasma_SDO_Profile.xmi">
+            <Provisioning packageName="org.cloudgraph.web.sdo"/>
+  		</DefaultNamespace>
+             
+        <!-- Example Namespaces --> 
+        <!-- Chemical Markup Language 2.4 -->      
+        <Namespace uri="http://org.cloudgraph/examples/cml"
+            artifact="http://www.xml-cml.org/schema"> 
+            <Provisioning packageName="org.cloudgraph.examples.cml"/>
+ 			<TypeBinding type="List" logicalName="CmlList"/>
+ 			<TypeBinding type="String" logicalName="CmlString"/>
+ 			<TypeBinding type="Float" logicalName="CmlFloat"/>
+		    <TypeBinding type="Enumeration" logicalName="CmlEnumeration">
+		        <PropertyBinding property="default" logicalName="default_"/>
+		    </TypeBinding>
+ 			<TypeBinding type="Expression" logicalName="CmlExpression"/> 			
+            <TypeBinding type="ArrayList" logicalName="CmlArrayList"/>            
+ 			
+        </Namespace>
+       
+        <DataAccessService dataStoreType="NOSQL">   
+
+            <DataAccessProvider name="HBASE"
+                className="org.cloudgraph.hbase.service.HBaseGraphService">
+                
+                <SequenceConfiguration  
+                    generatorClassName="org.hgraph.generator.HBaseSequenceGenerator"/>         
+                <Concurrency 
+                    pessimisticLockTimeoutMillis="300000"/>
+                              
+                <!-- links specific DAS provisioning to SDO namespace configs -->                 
+                <NamespaceLink uri="http://org.cloudgraph/examples/cml"/>
+            </DataAccessProvider>
+
+  		    	  
+        </DataAccessService>	
+    </SDO>
+    
+    <Repository> 
+        <Artifact name="Plasma_SDO_Profile.mdxml"
+            urn="Plasma_SDO_Profile.mdxml" 
+            namespaceUri="http://www.magicdraw.com/schemas/Plasma_SDO_Profile.xmi"/>        
+            
+        <!-- Example Artifacts --> 
+        <Artifact name="cml_3.xmi"
+            urn="cml_2_4.mdxml" 
+            namespaceUri="http://www.xml-cml.org/schema"/>  
+
+     </Repository>
+    
+</cfg:PlasmaConfiguration>   
